@@ -17,4 +17,9 @@ public class JokeLib {
     public static String getJoke() {
         return jokes[random.nextInt(jokes.length)];
     }
+    public static String getPJJoke() {
+        return jokes[7];
+    }
+
+
 }
