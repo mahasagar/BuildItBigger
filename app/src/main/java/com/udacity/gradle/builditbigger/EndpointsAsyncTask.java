@@ -1,10 +1,12 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
 
+import com.example.JokeLib;
 import com.example.mahasagar.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -12,6 +14,8 @@ import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
+
+import mahasagar.mylibrary.JokesAndroidLibActivity;
 
 /**
  * Created by mahasagar on 1/8/16.
@@ -32,7 +36,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                     // options for running against local devappserver
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl("http://192.168.1.13:8080/_ah/api/")
+                    .setRootUrl("http://192.168.0.127:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -57,6 +61,11 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
     @Override
     protected void onPostExecute(String result) {
         System.out.println("params[0].second : "+result);
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(context, JokesAndroidLibActivity.class);
+        JokeLib jokeSource = new JokeLib();
+        String joke = jokeSource.getJoke();
+        intent.putExtra(JokesAndroidLibActivity.JOKE_KEY, joke);
+        context.startActivity(intent);
     }
 }
